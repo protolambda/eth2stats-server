@@ -51,7 +51,7 @@ func (c *Core) Connect(ctx context.Context, req *proto.ConnectRequest) (*proto.C
 	client.SetVersion(req.GetVersion())
 	client.SetGenesisTime(req.GetGenesisTime())
 	client.SetOnline(true)
-	client.SetLocation(c.extractIP(ctx))
+	client.SetLocation(ip)
 	client.SetEth2StatsVersion(req.GetEth2StatsVersion())
 
 	loc := client.GetLocation()

@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"strings"
 
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
@@ -29,7 +30,13 @@ func (c *Core) extractIP(ctx context.Context) string {
 		return realIP[0]
 	}
 
-	p, _ := peer.FromContext(ctx)
-
-	return p.Addr.String()
+	p, ok := peer.FromContext(ctx)
+	if !ok {
+		log.WithField("md", md).Error("could not get IP")
+	}
+	addrStr := p.Addr.String()
+	if strings.Contains(addrStr, ":") {
+		addrStr = addrStr[:strings.Index(addrStr, ":")]
+	}
+	return addrStr
 }

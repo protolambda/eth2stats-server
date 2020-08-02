@@ -119,7 +119,11 @@ func (c *Client) SetLocation(ip string) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	c.location, _ = geoip.Lookup(ip)
+	var err error
+	c.location, err = geoip.Lookup(ip)
+	if err != nil {
+		log.WithError(err).WithField("ip", ip).Error("failed to lookup ip")
+	}
 }
 
 func (c *Client) SetMemoryUsage(val int64) {
