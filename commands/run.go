@@ -43,7 +43,7 @@ var runCmd = &cobra.Command{
 		proto.RegisterTelemetryServer(grpcServer, c)
 
 		log.Infof("setting up tcp listener on port %s", viper.GetString("grpc.port"))
-		lis, err := net.Listen("tcp", fmt.Sprintf(":%s", viper.GetString("grpc.port")))
+		lis, err := net.Listen("tcp", fmt.Sprintf("%s:%s", viper.GetString("grpc.ip"), viper.GetString("grpc.port")))
 		if err != nil {
 			log.Fatalf("failed to listen: %v", err)
 		}
@@ -81,6 +81,9 @@ func init() {
 	viper.BindPFlag("version-file", runCmd.Flag("version-file"))
 
 	// grpc
+	runCmd.Flags().String("grpc.ip", "", "gRPC listening IP. Empty is local (needs proxy)")
+	viper.BindPFlag("grpc.ip", runCmd.Flag("grpc.ip"))
+
 	runCmd.Flags().String("grpc.port", "9090", "gRPC server port")
 	viper.BindPFlag("grpc.port", runCmd.Flag("grpc.port"))
 

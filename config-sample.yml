@@ -1,4 +1,6 @@
 grpc:
+  # The IP on which the gRPC server will listen
+  ip: 0.0.0.0
   # The port on which the gRPC server will listen
   port: 9090
 
