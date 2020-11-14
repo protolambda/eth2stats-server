@@ -49,6 +49,7 @@ func (c *WSClient) SendDataFromChan() {
 		errChan := make(chan error)
 
 		go func() {
+			_ = c.conn.SetWriteDeadline(time.Now().Add(time.Second * 5))
 			err := c.conn.WriteJSON(msg)
 			errChan <- err
 		}()

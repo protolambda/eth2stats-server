@@ -2,11 +2,9 @@ package api
 
 import (
 	"fmt"
-	"net/http"
-
-	"github.com/gorilla/websocket"
-
 	"github.com/ConsenSys/eth2stats-server/api/wsclient"
+	"github.com/gorilla/websocket"
+	"net/http"
 )
 
 var wsupgrader = websocket.Upgrader{
@@ -21,6 +19,7 @@ func (a *API) websockets(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Failed to set websocket upgrade: %+v", err)
 		return
 	}
+	conn.SetReadLimit(2000)
 
 	client := a.RegisterWSClient(conn)
 
